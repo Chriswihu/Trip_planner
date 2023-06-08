@@ -6,13 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="dat3_ca2" />
+        <module name="trip_planner" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="dat3_ca2" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="dat3_ca2" options="-endorseddirs $PROJECT_DIR$/target/endorsed" />
+      <module name="dat3_ca2" options="-endorseddirs C:\Users\chris\IdeaProjects\Trip_planner\target/endorsed" />
+      <module name="trip_planner" options="-endorseddirs C:\Users\chris\IdeaProjects\Trip_planner\target/endorsed" />
     </option>
   </component>
 </project>
