@@ -1,109 +1,146 @@
 package entities;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Time;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@IdClass(entities.TripPK.class)
+@Table(name = "trip")
 public class Trip {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @javax.persistence.Column(name = "Name")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
     private String name;
+    //    @Temporal(TemporalType.DATE)
+    private String date; //TODO: Change to Date java.util.Date
+    //    @Temporal(TemporalType.TIME)
+    private String time; //TODO: Change to Time java.util.Time
+    private String location;
+    private String duration;
+    private String packinglist;
+    @ManyToOne
+    @JoinColumn(name = "guide_id", referencedColumnName = "id")
+    private Guide guide;
+
+
+    @ManyToMany(mappedBy = "trips")
+    private List<User> users;
+
+
+    public List<String> usersOnTrip() {
+        if (users.isEmpty()) {
+            return null;
+        }
+        List<String> usersByName = new ArrayList<>();
+        users.forEach((user) -> {
+            usersByName.add(user.getUserName());
+        });
+        return usersByName;
+    }
+
+    public Trip() {
+    }
+
+    public Trip(String name, String date, String time, String location, String duration, String packinglist) {
+        this.name = name;
+        this.date = date;
+        this.time = time;
+        this.location = location;
+        this.duration = duration;
+        this.packinglist = packinglist;
+        this.users = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "Date")
-    private Date date;
-
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
-
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    @Basic
-    @Column(name = "Time")
-    private Time time;
-
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
-
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
-
-    @Basic
-    @Column(name = "Location")
-    private String location;
 
     public String getLocation() {
         return location;
     }
-
     public void setLocation(String location) {
         this.location = location;
     }
 
-    @Basic
-    @Column(name = "Duration")
-    private String duration;
-
     public String getDuration() {
         return duration;
     }
-
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
-    @Basic
-    @Column(name = "Packing list")
-    private String packingList;
-
-    public String getPackingList() {
-        return packingList;
+    public String getPackinglist() {
+        return packinglist;
+    }
+    public void setPackinglist(String packinglist) {
+        this.packinglist = packinglist;
     }
 
-    public void setPackingList(String packingList) {
-        this.packingList = packingList;
+    public List<User> getUsers() {
+        return users;
+    }
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+    public void addUser(User user) {
+        this.users.add(user);
+        if(!user.getTrips().contains(this)) {
+            user.addTrip(this);
+        }
     }
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "Guide_Name")
-    private String guideName;
-
-    public String getGuideName() {
-        return guideName;
+    public Guide getGuide() {
+        return guide;
     }
-
-    public void setGuideName(String guideName) {
-        this.guideName = guideName;
+    public void setGuide(Guide guide) {
+        this.guide = guide;
+    }
+    public void addGuide(Guide guide) {
+        this.guide = guide;
+        if(!guide.getTrips().contains(this)) {
+            guide.addTrip(this);
+        }
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Trip trip = (Trip) o;
-        return Objects.equals(name, trip.name) && Objects.equals(date, trip.date) && Objects.equals(time, trip.time) && Objects.equals(location, trip.location) && Objects.equals(duration, trip.duration) && Objects.equals(packingList, trip.packingList) && Objects.equals(guideName, trip.guideName);
+    public String toString() {
+        return "Trip{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", location='" + location + '\'' +
+                ", duration='" + duration + '\'' +
+                ", packinglist='" + packinglist + '\'' +
+                '}';
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, date, time, location, duration, packingList, guideName);
-    }
+
+
 }

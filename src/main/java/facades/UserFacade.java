@@ -1,5 +1,7 @@
 package facades;
 
+import dtos.UserDto;
+import entities.Role;
 import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -29,7 +31,7 @@ public class UserFacade {
         return instance;
     }
 
-    public User getVerifiedUser(String username, String password) throws AuthenticationException {
+    public UserDto getVerifiedUser(String username, String password) throws AuthenticationException {
         EntityManager em = emf.createEntityManager();
         User user;
         try {
@@ -40,7 +42,50 @@ public class UserFacade {
         } finally {
             em.close();
         }
-        return user;
+        return new UserDto(user);
+    }
+
+    public UserDto createUser(User user) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(user);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new UserDto(user);
+    }
+
+    public UserDto addUser(String username, String password, String address, String phone, String email, String birthyear, String gender) {
+        EntityManager em = emf.createEntityManager();
+        User user = new User(username, password, address, phone, email, birthyear, gender);
+        Role role = new Role("user");
+        user.addRole(role);
+        em.getTransaction().begin();
+        em.persist(user);
+        em.getTransaction().commit();
+        em.close();
+
+        return new UserDto(user);
+    }
+
+    public UserDto deleteUser(String username) {
+        EntityManager em = emf.createEntityManager();
+        User user = em.find(User.class, username);
+
+        em.getTransaction().begin();
+        em.remove(user);
+        em.getTransaction().commit();
+        em.close();
+        return new UserDto(user);
+    }
+
+    public UserDto getUserById(Long id) {
+        EntityManager em = emf.createEntityManager();
+        User user = em.find(User.class, id);
+        em.close();
+        return new UserDto(user);
     }
 
 }

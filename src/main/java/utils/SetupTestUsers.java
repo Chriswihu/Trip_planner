@@ -28,6 +28,8 @@ public class SetupTestUsers {
       throw new UnsupportedOperationException("You have not changed the passwords");
 
     em.getTransaction().begin();
+
+
     Role userRole = new Role("user");
     Role adminRole = new Role("admin");
     user.addRole(userRole);
@@ -39,7 +41,11 @@ public class SetupTestUsers {
     em.persist(user);
     em.persist(admin);
     em.persist(both);
+
+
     em.getTransaction().commit();
+
+
     System.out.println("PW: " + user.getUserPass());
     System.out.println("Testing user with OK password: " + user.verifyPassword("test"));
     System.out.println("Testing user with wrong password: " + user.verifyPassword("test1"));
