@@ -24,7 +24,7 @@ public class UserDto implements Serializable {
     private final String email;
     private final String birthyear;
     private final String gender;
-    private final List<String> trips = new ArrayList<>();
+    private final List<TripDto> trips = new ArrayList<>();
 
     public UserDto(User user) {
         this.id = user.getId();
@@ -35,7 +35,13 @@ public class UserDto implements Serializable {
         this.email = user.getEmail();
         this.birthyear = user.getBirthyear();
         this.gender = user.getGender();
-        user.getTrips().forEach(trip -> this.trips.add(trip.getName()));
+        user.getTrips().forEach(trip -> this.trips.add(new TripDto(trip)));
+    }
+
+    public static List<UserDto> getDtos(List<User> users) {
+        List<UserDto> userDtos = new ArrayList();
+        users.forEach(user -> userDtos.add(new UserDto(user)));
+        return userDtos;
     }
 
     public Long getId() {
@@ -70,40 +76,8 @@ public class UserDto implements Serializable {
         return gender;
     }
 
-    public List<String> getTrips() {
+    public List<TripDto> getTrips() {
         return trips;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserDto entity = (UserDto) o;
-        return Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.userName, entity.userName) &&
-                Objects.equals(this.userPass, entity.userPass) &&
-                Objects.equals(this.address, entity.address) &&
-                Objects.equals(this.phone, entity.phone) &&
-                Objects.equals(this.email, entity.email) &&
-                Objects.equals(this.birthyear, entity.birthyear) &&
-                Objects.equals(this.gender, entity.gender);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, userName, userPass, address, phone, email, birthyear, gender);
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "userName = " + userName + ", " +
-                "userPass = " + userPass + ", " +
-                "address = " + address + ", " +
-                "phone = " + phone + ", " +
-                "email = " + email + ", " +
-                "birthyear = " + birthyear + ", " +
-                "gender = " + gender + ")";
-    }
 }

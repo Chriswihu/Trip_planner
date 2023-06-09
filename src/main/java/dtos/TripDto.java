@@ -19,6 +19,7 @@ public class TripDto implements Serializable {
     private final String location;
     private final String duration;
     private final String packinglist;
+    private final GuideDto guide;
     private final List<UserDto> users = new ArrayList<>();
 
     public TripDto(Trip trip) {
@@ -29,11 +30,18 @@ public class TripDto implements Serializable {
         this.location = trip.getLocation();
         this.duration = trip.getDuration();
         this.packinglist = trip.getPackinglist();
+        this.guide = new GuideDto(trip.getGuide());
         trip.getUsers().forEach(user -> this.users.add(new UserDto(user)));
     }
 
     public static List<TripDto> toList(List<Trip> trips) {
         List<TripDto> tripDtos = new ArrayList<>();
+        trips.forEach(trip -> tripDtos.add(new TripDto(trip)));
+        return tripDtos;
+    }
+
+    public static List<TripDto> getDtos(List<Trip> trips) {
+        List<TripDto> tripDtos = new ArrayList();
         trips.forEach(trip -> tripDtos.add(new TripDto(trip)));
         return tripDtos;
     }
@@ -66,40 +74,13 @@ public class TripDto implements Serializable {
         return packinglist;
     }
 
+    public GuideDto getGuide() {
+        return guide;
+    }
+
     public List<UserDto> getUsers() {
         return users;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TripDto entity = (TripDto) o;
-        return Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.name, entity.name) &&
-                Objects.equals(this.date, entity.date) &&
-                Objects.equals(this.time, entity.time) &&
-                Objects.equals(this.location, entity.location) &&
-                Objects.equals(this.duration, entity.duration) &&
-                Objects.equals(this.packinglist, entity.packinglist) &&
-                Objects.equals(this.users, entity.users);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, date, time, location, duration, packinglist, users);
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "name = " + name + ", " +
-                "date = " + date + ", " +
-                "time = " + time + ", " +
-                "location = " + location + ", " +
-                "duration = " + duration + ", " +
-                "packinglist = " + packinglist + ", " +
-                "users = " + users + ")";
-    }
 }

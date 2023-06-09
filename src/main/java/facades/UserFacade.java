@@ -5,7 +5,11 @@ import entities.Role;
 import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
+
 import security.errorhandling.AuthenticationException;
+
+import java.util.List;
 
 /**
  * @author lam@cphbusiness.dk
@@ -31,6 +35,10 @@ public class UserFacade {
         return instance;
     }
 
+    private static EntityManager getEntityManager() {
+        return emf.createEntityManager();
+    }
+
     public User getVerifiedUser(String username, String password) throws AuthenticationException {
         EntityManager em = emf.createEntityManager();
         User user;
@@ -45,7 +53,8 @@ public class UserFacade {
         return user;
     }
 
-    public User createUser(User user) {
+    public static UserDto create(UserDto ud){
+        User user = new User(ud.getUserName(), ud.getUserPass(), ud.getAddress(), ud.getPhone(), ud.getEmail(), ud.getBirthyear(), ud.getGender());
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
@@ -54,38 +63,55 @@ public class UserFacade {
         } finally {
             em.close();
         }
-        return user;
+        return new UserDto(user);
     }
 
-    public User addUser(String username, String password, String address, String phone, String email, String birthyear, String gender) {
+    public UserDto updateUser(UserDto ud) {
         EntityManager em = emf.createEntityManager();
-        User user = new User(username, password, address, phone, email, birthyear, gender);
-        Role role = new Role("user");
-        user.addRole(role);
-        em.getTransaction().begin();
-        em.persist(user);
-        em.getTransaction().commit();
-        em.close();
-
-        return user;
+        User user = em.find(User.class, ud.getUserName());
+        user.setAddress(ud.getAddress());
+        user.setPhone(ud.getPhone());
+        user.setEmail(ud.getEmail());
+        user.setBirthyear(ud.getBirthyear());
+        user.setGender(ud.getGender());
+        try {
+            em.getTransaction().begin();
+            em.merge(user);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new UserDto(user);
     }
 
-    public User deleteUser(String username) {
+    public List<UserDto> getAllUsers() {
         EntityManager em = emf.createEntityManager();
-        User user = em.find(User.class, username);
-
-        em.getTransaction().begin();
-        em.remove(user);
-        em.getTransaction().commit();
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
+        List<User> users = query.getResultList();
         em.close();
-        return user;
+        return UserDto.getDtos(users);
     }
 
-    public User getUserById(Long id) {
+    public UserDto getUserById(Long id) {
         EntityManager em = emf.createEntityManager();
         User user = em.find(User.class, id);
         em.close();
-        return user;
+        return new UserDto(user);
     }
+
+    public UserDto deleteUser(Long id) {
+        EntityManager em = emf.createEntityManager();
+        User user = em.find(User.class, id);
+        try {
+            em.getTransaction().begin();
+            em.remove(user);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new UserDto(user);
+    }
+
+
 
 }

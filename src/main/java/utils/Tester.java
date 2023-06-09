@@ -16,8 +16,8 @@ public class Tester {
     User u1 = new User("user", "test", "gadevej", "12345678", "mail.com", "2000", "human");
     User u2 = new User("admin", "test", "vejgade", "23456789", "mail.com", "2001", "human");
 
-    Role userRole = new Role("user");
     Role adminRole = new Role("admin");
+    Role userRole = new Role("user");
 
     Guide g1 = new Guide("Hans", "Human", "12/12/1985", "Profile1", "Image");
     Guide g2 = new Guide("Ben", "Human", "12/12/1985", "Profile2", "Image");

@@ -49,32 +49,4 @@ public class GuideDto implements Serializable {
         return imageUrl;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        GuideDto entity = (GuideDto) o;
-        return Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.name, entity.name) &&
-                Objects.equals(this.gender, entity.gender) &&
-                Objects.equals(this.birthyear, entity.birthyear) &&
-                Objects.equals(this.profile, entity.profile) &&
-                Objects.equals(this.imageUrl, entity.imageUrl);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, gender, birthyear, profile, imageUrl);
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "name = " + name + ", " +
-                "gender = " + gender + ", " +
-                "birthyear = " + birthyear + ", " +
-                "profile = " + profile + ", " +
-                "imageUrl = " + imageUrl + ")";
-    }
 }
