@@ -25,31 +25,32 @@ public class Trip {
     private Guide guide;
 
 
-    @ManyToMany(mappedBy = "trips")
+    @ManyToMany(mappedBy = "trips", fetch = FetchType.EAGER)
     private List<User> users;
 
 
-    public List<String> usersOnTrip() {
+    public List<Long> usersOnTrip() {
         if (users.isEmpty()) {
             return null;
         }
-        List<String> usersByName = new ArrayList<>();
+        List<Long> usersById = new ArrayList<>();
         users.forEach((user) -> {
-            usersByName.add(user.getUserName());
+            usersById.add(user.getId());
         });
-        return usersByName;
+        return usersOnTrip();
     }
 
     public Trip() {
     }
 
-    public Trip(String name, String date, String time, String location, String duration, String packinglist) {
+    public Trip(String name, String date, String time, String location, String duration, String packinglist, Guide guide) {
         this.name = name;
         this.date = date;
         this.time = time;
         this.location = location;
         this.duration = duration;
         this.packinglist = packinglist;
+        this.guide = guide;
         this.users = new ArrayList<>();
     }
 

@@ -3,6 +3,7 @@ package dtos;
 import entities.Guide;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -23,6 +24,12 @@ public class GuideDto implements Serializable {
         this.birthyear = guide.getBirthyear();
         this.profile = guide.getProfile();
         this.imageUrl = guide.getImageUrl();
+    }
+
+    public static List<GuideDto> getDtos(List<Guide> guides) {
+        List<GuideDto> guideDtos = null;
+        guides.forEach(guide -> guideDtos.add(new GuideDto(guide)));
+        return guideDtos;
     }
 
     public Long getId() {
@@ -48,5 +55,7 @@ public class GuideDto implements Serializable {
     public String getImageUrl() {
         return imageUrl;
     }
+
+
 
 }

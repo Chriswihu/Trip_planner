@@ -74,7 +74,7 @@ public class TripDto implements Serializable {
         return packinglist;
     }
 
-    public GuideDto getGuide() {
+    public GuideDto getGuideDto() {
         return guide;
     }
 
