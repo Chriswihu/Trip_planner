@@ -71,12 +71,12 @@ public class UserResource {
         return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
     }
 
-    @POST
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response createUser(String content) {
-        UserDto ud = GSON.fromJson(content, UserDto.class);
-        User newUser = userFacade.addUser(ud.getUserName(), ud.getUserPass(), ud.getAddress(), ud.getPhone(), ud.getEmail(), ud.getBirthyear(), ud.getGender());
-        return Response.ok(GSON.toJson(new UserDto(newUser))).build();
-    }
+//    @POST
+//    @Produces({MediaType.APPLICATION_JSON})
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    public Response createUser(String content) {
+//        UserDto ud = GSON.fromJson(content, UserDto.class);
+//        User newUser = userFacade.addUser(ud.getUserName(), ud.getUserPass(), ud.getAddress(), ud.getPhone(), ud.getEmail(), ud.getBirthyear(), ud.getGender());
+//        return Response.ok(GSON.toJson(new UserDto(newUser))).build();
+//    }
 }

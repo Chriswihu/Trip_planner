@@ -43,14 +43,14 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(String name, String date, String time, String location, String duration, String packinglist, Guide guide) {
+    public Trip(String name, String date, String time, String location, String duration, String packinglist) {
         this.name = name;
         this.date = date;
         this.time = time;
         this.location = location;
         this.duration = duration;
         this.packinglist = packinglist;
-        this.guide = guide;
+        this.guide = new Guide();
         this.users = new ArrayList<>();
     }
 
@@ -139,6 +139,7 @@ public class Trip {
                 ", location='" + location + '\'' +
                 ", duration='" + duration + '\'' +
                 ", packinglist='" + packinglist + '\'' +
+                ", guide=" + guide +
                 '}';
     }
 

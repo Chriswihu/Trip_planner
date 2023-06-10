@@ -33,32 +33,32 @@ public class TripResource {
     }
 
     //Just to verify if the database is setup
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("all")
-    public Response getAllTrips() {
-
-        List<TripDto> tripDtos = TripFacade.getAll();
-        System.out.println(tripDtos);
-
-        for (TripDto tripDto : tripDtos) {
-            for (UserDto userDto : tripDto.getUsers()) {
-                userDto.setUserPass("");
-            }
-        }
-
-        return Response.ok().entity(GSON.toJson(tripDtos)).build();
-    }
-
-    @POST
-    @Path("create")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTrip(String trip) {
-        TripDto tripDto = GSON.fromJson(trip, TripDto.class);
-        FACADE.createTrip(tripDto);
-        return Response.ok().build();
-    }
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Path("all")
+//    public Response getAllTrips() {
+//
+//        List<TripDto> tripDtos = TripFacade.getAll();
+//        System.out.println(tripDtos);
+//
+//        for (TripDto tripDto : tripDtos) {
+//            for (UserDto userDto : tripDto.getUsers()) {
+//                userDto.setUserPass("");
+//            }
+//        }
+//
+//        return Response.ok().entity(GSON.toJson(tripDtos)).build();
+//    }
+//
+//    @POST
+//    @Path("create")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public Response createTrip(String trip) {
+//        TripDto tripDto = GSON.fromJson(trip, TripDto.class);
+//        FACADE.createTrip(tripDto);
+//        return Response.ok().build();
+//    }
 
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
